@@ -1,10 +1,22 @@
 import streamlit as st
 import pandas as pd
 import requests
+from io import StringIO
 
 # Charger les identifiants utilisateurs depuis le fichier CSV
-df = pd.read_csv("user_recommendations_last.csv")
-id_clients = df['user_id'].unique().tolist()
+# URL du fichier CSV sur Azure Blob Storage
+csv_url = "https://functiondef2.blob.core.windows.net/stockblobrecommender/user_recommendations_last.csv?sp=racw&st=2024-09-18T14:04:04Z&se=2027-09-11T22:04:04Z&sv=2022-11-02&sr=b&sig=KrwYchaiGKoBO02dbDqArhJMBjq3gRiJVtSMNL4%2ByvA%3D"
+
+# Charger les identifiants utilisateurs depuis le fichier CSV distant
+try:
+    response = requests.get(csv_url)
+    response.raise_for_status()  # Vérifie que la requête est réussie
+    csv_data = StringIO(response.text)  # Convertit le texte en objet compatible avec pandas
+    df = pd.read_csv(csv_data)
+    id_clients = df['user_id'].unique().tolist()
+except requests.exceptions.RequestException as e:
+    st.error(f"Erreur lors du chargement du fichier CSV : {e}")
+    st.stop()
 
 # Titre de l'application
 st.title("Système de Recommandation de Livres")

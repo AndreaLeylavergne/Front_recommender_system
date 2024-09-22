@@ -6,7 +6,7 @@ from io import StringIO
 # Charger les identifiants utilisateurs depuis le fichier CSV
 # URL du fichier CSV sur Azure Blob Storage
 csv_url = "https://functiondef2.blob.core.windows.net/stockblobrecommender/user_recommendations_last.csv?sp=racw&st=2024-09-18T14:04:04Z&se=2027-09-11T22:04:04Z&sv=2022-11-02&sr=b&sig=KrwYchaiGKoBO02dbDqArhJMBjq3gRiJVtSMNL4%2ByvA%3D"
-
+# 
 # Charger les identifiants utilisateurs depuis le fichier CSV distant
 try:
     response = requests.get(csv_url)
